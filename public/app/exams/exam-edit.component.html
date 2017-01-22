@@ -1,0 +1,67 @@
+<div *ngIf="exam" class="white section">
+    <div class="">
+        <h4>Exam <span *ngIf="exam.name">: {{exam.name}}</span></h4>
+    </div>
+
+    <div class="row">
+        <div class="input-field col s12">
+            <input type="text" class="validate" id="name" required [(ngModel)]="exam.name"
+                   placeholder="Name"
+                   maxlength="1024"
+            />
+            <label for="name" class="active">Exam</label>
+        </div>
+        <div class="input-field col s12">
+            <input type="date" class="validate" id="published" required [(ngModel)]="exam.humanPublished"
+                   placeholder="Published"
+            />
+            <label for="published" class="active">Published</label>
+        </div>
+    </div>
+
+    <div class="row">
+        <button class="btn" (click)="save()">Save</button>
+        <button class="btn grey" (click)="cancel()">Cancel</button>
+    </div>
+    <hr/>
+    <div class="row" *ngIf="exam.id">
+        <h5>Edit questions</h5>
+        <div *ngIf="exam.questions.length">
+            <input [(ngModel)]="filter" placeholder="Question search..." type="search"/>
+        </div>
+        <button class="btn" (click)="addQuestion()">+ Add new question</button>
+    </div>
+
+    <div class="row" *ngIf="!exam.id">
+        <h5>You must save your exam before to be able to add questions.</h5>
+    </div>
+
+    <ul class="collection">
+        <li class="collection-item" *ngFor="let question of exam.questions | filteredQuestions:filter ">
+            <div class="question-exam-edit">
+                <h6>{{question.text}}</h6>
+                <ul class="answers-exam-edit">
+                    <li class="answer-exam-edit" *ngFor="let answer of question.answers">
+                        {{answer.text}}
+                        <span *ngIf="answer.correct"
+                              class="green-text correct-answer"><i class="material-icons">done</i></span>
+                    </li>
+                </ul>
+                <div class="secondary-content">
+                    <button title="Edit this Exam"
+                            class="btn-floating btn-small waves-effect waves-light"
+                            (click)="editQuestion(question)">
+                        <i class="material-icons">edit</i>
+                    </button>
+                    <button title="Delete this Exam"
+                            class="btn-floating btn-small waves-effect waves-light red"
+                            (click)="deleteQuestion(question)">
+                        <i class="material-icons">delete</i>
+                    </button>
+                </div>
+            </div>
+
+        </li>
+    </ul>
+
+</div>

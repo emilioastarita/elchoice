@@ -1,0 +1,44 @@
+{
+  "name": "ElChoice",
+  "description": "ElChoice parser y backend de exámenes de residencia.",
+  "keywords": [
+    "residencia",
+    "buenos aires",
+    "rest",
+    "router",
+    "psr7"
+  ],
+  "homepage": "https://github.com/emilioastarita/elchoice",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Emilio Astarita",
+      "email": "emilio.astarita@gmail.com",
+      "homepage": "http://www.cloudymedia.com/"
+    }
+  ],
+  "secure-http": false,
+  "require": {
+    "php": ">=5.5.0",
+    "slim/slim": "^3.1",
+    "slim/php-view": "^2.0",
+    "monolog/monolog": "^1.17",
+    "doctrine/orm": "*"
+  },
+  "require-dev": {
+    "guzzlehttp/guzzle": "~6.0",
+    "phpunit/phpunit": "5.4.*",
+    "phpunit/dbunit": ">=1.2",
+    "phpunit/php-invoker": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "./src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "App\\Tests\\": "src/tests/"
+    }
+  }
+}

@@ -1,0 +1,104 @@
+<div *ngIf="exam" class="white section">
+
+    <div class="exam-stats">
+        <span title="Correct answers" class="badge green white-text"><i class="material-icons">done</i> {{correct}}</span>
+        <span title="Wrong answers" class="badge red white-text"><i class="material-icons">error</i> {{wrong}}</span>
+        <span title="Resolved / Total Answers" class="badge grey white-text">{{resolved}}/{{total}}</span>
+    </div>
+
+    <ul class="">
+
+
+        <li class="">
+            <h4>
+                <span>{{exam.name}}</span>
+                <small *ngIf="exam.published">({{exam.humanPublished}})</small>
+            </h4>
+            <div class="row">
+                <div class="col s12">
+                    <input [(ngModel)]="filter"  placeholder="Search..." type="search" />
+                </div>
+            </div>
+        </li>
+        <li class=" " *ngFor="let question of exam.questions | filteredQuestions:filter ">
+
+
+
+            <div class="">
+
+            <div class="card-panel darken-3 answer-container">
+                <h5 class="exam-resolve-question">
+                    <i class="circle material-icons grey-text">question_answer</i>
+                    {{question.text}}
+                </h5>
+                <div class="answer-status green" *ngIf="question.userCheckAnswer && question.allCorrect">
+                      <span class="white-text">
+                          CORRECT
+                          <i class="material-icons tiny">done</i>
+                      </span>
+                </div>
+
+                <div class="answer-status red" *ngIf="question.userCheckAnswer && !question.allCorrect">
+                      <span class="white-text">
+                          WRONG
+                          <i class="material-icons tiny">error</i>
+                      </span>
+                </div>
+
+                <div class="answer " *ngFor="let answer of question.answers">
+
+                        <label class=""   [attr.for]=answer.getHtmlId()>
+                            <span class="">
+                                <input class="hide" type="checkbox" [(ngModel)]="answer.userAnswer"  [attr.id]=answer.getHtmlId() />
+                                <span class="green-text white" *ngIf="answer.userAnswer">
+                                    &#10004;
+                                </span>
+                                <span class="grey-text white" *ngIf="!answer.userAnswer">
+                                    &#10008;
+                                </span>
+                            </span>
+
+                            <span [ngClass]="{'black-text': answer.userAnswer }">
+                                {{answer.text}}
+                            </span>
+
+                            <span *ngIf="question.userShowAnswer && answer.correct"
+                                  class="green-text correct-answer"><i class="material-icons">done</i></span>
+                        </label>
+
+                </div>
+                <div class="actions">
+                    <a
+                            (click)="checkAnswers(question)"
+                            title="Check answers"
+                            class="btn waves-effect waves-light"
+                    >
+                        <span class="hide-on-small-and-down">Check</span>
+                        <i class="material-icons">done</i>
+                    </a>
+
+                    <a *ngIf="question.userShowAnswer === false"
+                            (click)="showAnswer(question)"
+                            title="Show answers"
+                            class="btn waves-effect waves-light grey"
+                    >
+                        <span class="hide-on-small-and-down">Show Answers</span>
+                        <i class="material-icons">visibility</i>
+                    </a>
+
+                    <a *ngIf="question.userShowAnswer"
+                            (click)="question.userShowAnswer = false"
+                            title="Hide answers"
+                            class="btn waves-effect waves-light grey"
+                    >
+                        <span class="hide-on-small-and-down">Hide Answers</span>
+                        <i class="material-icons">visibility_off</i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        </li>
+    </ul>
+
+</div>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <base href="/">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>El Choice Trainer</title>
+    <link rel="stylesheet" href="/node_modules/materialize-css/dist/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet"  href="/out/style.css">
+    <?php if ($deployJs !== 'prod'): ?>
+        <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+        <script src="/node_modules/materialize-css/dist/js/materialize.min.js"></script>
+        <script src="/node_modules/core-js/client/shim.min.js"></script>
+        <script src="/node_modules/zone.js/dist/zone.min.js"></script>
+        <script src="/node_modules/reflect-metadata/Reflect.js"></script>
+        <script src="/node_modules/systemjs/dist/system.js"></script>
+        <script src="/systemjs.config.js"></script>
+    <?php endif; ?>
+
+</head>
+<body class="grey lighten">
+<main class="grey lighten-3">
+        <my-app>
+            <div class="preloader-first">
+                <div class="progress black">
+                    <div class="indeterminate grey"></div>
+                </div>
+                <div class="card  black lighten-4">
+                    <div class="card-content white-text">
+                        <span class="card-title">El Choice Trainer</span>
+                        <p>Loading....</p>
+                    </div>
+                </div>
+            </div>
+
+
+        </my-app>
+    </main>
+
+    <?php if ($deployJs === 'prod'): ?>
+        <script src="/out/outfile.js"></script>
+    <?php endif; ?>
+
+<script>
+    System.import('app').catch(function (err) {
+        console.error(err);
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,54 @@
+<div *ngIf="question" class="white section">
+    <div class="">
+        <h4>Editing Question</h4>
+    </div>
+
+    <div class="row">
+        <div class="input-field col s12">
+            <textarea type="text" class="validate materialize-textarea" id="text" required [(ngModel)]="question.text"
+                   placeholder="Pregunta"
+                   maxlength="1024"
+            ></textarea>
+            <label for="text" class="active">Question</label>
+        </div>
+    </div>
+
+    <div class="">
+        <h5>Answers</h5>
+        <p>
+            <button class="btn" (click)="addAnswer()">Add answer</button>
+        </p>
+        <div class="answers ">
+            <div class="answer row" *ngFor="let answer of question.answers">
+                <div class="col s7">
+                    <input type="text" class="validate"  required [(ngModel)]="answer.text"
+                           placeholder="Answer"
+                           maxlength="1024"
+                    />
+
+                </div>
+                <div class="col s2">
+                    <label>
+                        <span class="green-text btn white" *ngIf="answer.correct">
+                            &#10004;
+                        </span>
+                        <span class="red-text btn white" *ngIf="!answer.correct">
+                            &#10008;
+                        </span>
+                        <input class="hide" type="checkbox" [(ngModel)]="answer.correct" >
+                    </label>
+
+                </div>
+                <div class="col s3">
+                    <button class="btn red white-text" (click)="removeAnswer(answer)" title="Remove"><i class="material-icons tiny">delete</i></button>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="row">
+        <button class="btn" (click)="save()">Save</button>
+        <button class="btn grey" (click)="goBack()">Cancel</button>
+    </div>
+</div>

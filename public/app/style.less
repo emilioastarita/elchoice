@@ -1,0 +1,175 @@
+/* fallback */
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Material Icons'),
+  local('MaterialIcons-Regular'),
+  url(/node_modules/materialize-css/dist/font/material-design-icons/Material-Design-Icons.woff2) format('woff2');
+}
+
+
+main {
+  position: relative;
+}
+
+.routerOutletContainer {
+  padding: 9px;
+}
+
+@media print {
+  .no-print, .no-print * {
+    display: none !important;
+  }
+}
+
+@media (min-width: 801px) {
+  main {
+    max-width: 60%;
+    margin: auto;
+  }
+}
+
+@media (min-width: 901px) {
+  main {
+    max-width: 50%;
+    margin: auto;
+  }
+}
+
+a {
+  cursor: pointer;
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
+
+input.ng-dirty.ng-invalid {
+  color: #ff1e08
+}
+
+.collection {
+  .card-panel {
+    font-size: small;
+  }
+}
+
+.preloader-first {
+  margin: auto;
+  width: 100%;
+  text-align: center;
+}
+
+ul.collection {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.section {
+  padding: 10px 20px;
+  border: 1px solid #e0e0e0;
+}
+
+.info {
+  text-align: center;
+  padding: 9px;
+}
+
+[type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+  position: static;
+  left: 0px;
+  opacity: 1;
+}
+.exam-stats {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index:1000;
+  text-align: center;
+  .badge {
+    box-shadow: 1px 1px 1px 0px #ccc;
+    padding: 7px 10px;
+    position: initial;
+    border-radius: 5px;
+    .material-icons {
+      font-size: 15px;
+    }
+  }
+}
+h5.exam-resolve-question {
+  font-weight: 300;
+  line-height: normal;
+  font-size: 1.33rem;
+  margin-top: 16px;
+}
+.actions {
+  text-align: center;
+}
+@media only screen and (min-width: 601px) {
+    .actions {
+      text-align: left;
+      .btn i.material-icons {
+        margin-left: 15px;
+        float: right;
+      }
+    }
+}
+
+.answer-container {
+  position: relative;
+  .answer-status {
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: 3px;
+    width: 100%;
+    text-align: right;
+    height: 31px;
+    border-radius: 5px 5px 0px 0;
+  }
+  label {
+    font-size: 1rem;
+    cursor: pointer;
+  }
+}
+
+.answer {
+  position: relative;
+  .correct-answer {
+    position: absolute;
+  }
+
+  margin-bottom: 10px;
+  margin-left: 28px;
+}
+
+.question-exam-edit {
+  position: relative;
+  padding-top: 37px;
+  h6 {
+    font-weight: bold;
+  }
+  .answers-exam-edit {
+    padding-left: 5px;
+  }
+  .secondary-content {
+    position: absolute;
+    color: #26a69a;
+    top: 0;
+    right: 0;
+    float: none;
+  }
+}
