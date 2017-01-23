@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {User} from "../models/User";
 import {UserService} from "./user.service";
-import {RouteParams} from "@angular/router-deprecated";
+import {ActivatedRoute, Params} from "@angular/router";
 import {ErrorService} from "../error.service";
 
 
@@ -18,19 +18,25 @@ export class UserDetailComponent implements OnInit {
 
     constructor(private userService:UserService,
                 private errorService:ErrorService,
-                private routeParams:RouteParams) {
+                private route:ActivatedRoute) {
 
     }
 
     ngOnInit() {
-        if (this.routeParams.get('id') !== null) {
-            const id = +this.routeParams.get('id');
-            this.userService.getUser(id)
-                .then(user => this.user = user);
-        } else {
-            this.user = new User();
-            this.user.role = 'user';
-        }
+        const switchMap = (params: Params) => {
+            if (params['id'] === 'new') {
+                const user = new User();
+                user.role = 'user';
+                return Promise.resolve(user);
+            } else {
+                return this.userService.getUser(+params['id']);
+            }
+        };
+        this.route.params
+            .switchMap(switchMap)
+            .subscribe((user:User) => {
+                this.user = user;
+            });
     }
 
     goBack(savedUser:User = null) {

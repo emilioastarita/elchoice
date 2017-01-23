@@ -2,7 +2,7 @@ import {Component, OnInit} from "@angular/core";
 import {UserDetailComponent} from "./user-detail.component";
 import {User} from "../models/User";
 import {UserService} from "./user.service";
-import {Router} from "@angular/router-deprecated";
+import {Router} from "@angular/router";
 import {ErrorService} from "../error.service";
 import {FilterUsersPipe} from "./filtered-users";
 
@@ -11,8 +11,8 @@ import {FilterUsersPipe} from "./filtered-users";
     selector: 'my-users',
     templateUrl: './app/users/users.component.html',
     styleUrls:  ['out/users.component.css'],
-    directives: <any[]>[UserDetailComponent],
-    pipes: [FilterUsersPipe]
+    // directives: <any[]>[UserDetailComponent],
+    // pipes: [FilterUsersPipe]
 })
 
 export class UsersComponent implements OnInit {
@@ -37,12 +37,12 @@ export class UsersComponent implements OnInit {
 
     details(user: User, event: any) {
         event.stopPropagation();
-        this.router.navigate(['UserDetail', { id: user.id }]);
+        this.router.navigate(['users', user.id]);
     }
 
     addUser() {
         event.stopPropagation();
-        this.router.navigate(['UserDetailNew']);
+        this.router.navigate(['users/new']);
     }
 
 

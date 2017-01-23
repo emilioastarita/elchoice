@@ -1,7 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 import {Exam} from "../models/Exam";
 import {ExamService} from "./exam.service";
-import {RouteParams} from "@angular/router-deprecated";
+import {ActivatedRoute, Params} from "@angular/router";
 import {ErrorService} from "../error.service";
 import {QuestionEditComponent} from "../questions/question-edit.component";
 import {FilterQuestionsPipe} from "../questions/filtered-questions";
@@ -12,8 +12,8 @@ import {Question} from "../models/Question";
     selector: 'exam-resolve',
     templateUrl: './app/exams/exam-resolve.component.html',
     providers: [ExamService, ErrorService],
-    directives: [QuestionEditComponent],
-    pipes: [FilterQuestionsPipe]
+    // directives: [QuestionEditComponent],
+    // pipes: [FilterQuestionsPipe]
 })
 export class ExamResolveComponent implements OnInit {
 
@@ -26,19 +26,17 @@ export class ExamResolveComponent implements OnInit {
 
     constructor(private examService:ExamService,
                 private errorService:ErrorService,
-                private routeParams:RouteParams) {
+                private route:ActivatedRoute) {
 
     }
 
     ngOnInit() {
-        if (this.routeParams.get('id') !== null) {
-            const id = +this.routeParams.get('id');
-            this.examService.getExam(id)
-                .then((exam) => {
-                    this.exam = exam;
-                    this.calcStats()
-                });
-        }
+        this.route.params
+            .switchMap((params: Params) => this.examService.getExam(+params['id']))
+            .subscribe((exam) => {
+                this.exam = exam;
+                this.calcStats()
+            });
     }
 
     showAnswer(question:Question) {

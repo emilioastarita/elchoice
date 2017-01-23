@@ -58,7 +58,7 @@ class ExamController extends BaseController
     {
         $examService = $this->get('examService');
         $this->logger->info("Get exam");
-        $exam = $examService->find($args['id'], $this->getFilterId());
+        $exam = $examService->find($args['id']);
         if (empty($exam)) {
             throw new \Exception('No exam.');
         }

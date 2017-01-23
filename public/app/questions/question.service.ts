@@ -40,9 +40,9 @@ export class QuestionService {
         return null;
     }
 
-    save(question:Question):Promise<Question>|Promise<any> {
+    save(question:Question) {
         const promise = this.getErrorPromise(question);
-        if (promise) {
+        if (typeof(promise) !== 'null') {
             return promise;
         }
         if (question.id) {

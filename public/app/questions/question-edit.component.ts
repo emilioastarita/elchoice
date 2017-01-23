@@ -1,7 +1,7 @@
 import {Component, OnInit, Input} from "@angular/core";
 import {Question} from "../models/Question";
 import {QuestionService} from "./question.service";
-import {RouteParams} from "@angular/router-deprecated";
+import {ActivatedRoute, Params} from "@angular/router";
 import {ErrorService} from "../error.service";
 import {Answer} from "../models/Answer";
 
@@ -17,19 +17,27 @@ export class QuestionEditComponent implements OnInit {
 
     constructor(private questionService:QuestionService,
                 private errorService:ErrorService,
-                private routeParams:RouteParams) {
+                private route:ActivatedRoute) {
 
     }
 
     ngOnInit() {
-        if (this.routeParams.get('id') !== null) {
-            const id = +this.routeParams.get('id');
-            this.questionService.getQuestion(id)
-                .then(question => this.question = question);
-        } else {
-            this.question = new Question();
-            this.question.examId = parseInt(this.routeParams.get('examId'), 10);
-        }
+
+        const switchMap = (params: Params) => {
+            console.log('params are', params);
+            if (!params['id']) {
+                const question = new Question();
+                question.examId = parseInt(params['examId'], 10);
+                return Promise.resolve(question);
+            } else {
+                return this.questionService.getQuestion(+params['id']);
+            }
+        };
+        this.route.params
+            .switchMap(switchMap)
+            .subscribe((question:Question) => {
+                this.question = question;
+            });
 
     }
 

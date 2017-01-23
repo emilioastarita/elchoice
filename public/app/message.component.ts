@@ -1,10 +1,10 @@
 import {Component} from "@angular/core";
 import {ErrorService, IMessage} from "./error.service";
-import {Router} from "@angular/router-deprecated";
+import {Router} from "@angular/router";
 
 
 @Component({
-    selector: 'my-message',
+    selector: 'message',
     styles: [`
         :host {
             position: absolute;
@@ -77,7 +77,7 @@ export class MessageComponent {
             }
             this.open = true;
             if (message.code === 401) {
-                this.router.navigate(['Members'])
+                this.router.navigate(['members'])
             }
         });
     }

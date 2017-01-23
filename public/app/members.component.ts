@@ -1,7 +1,7 @@
 import {Component} from "@angular/core";
 import {User} from "./models/User";
 import {UserService} from "./users/user.service";
-import {Router} from "@angular/router-deprecated";
+import {Router} from "@angular/router";
 import {ErrorService} from "./error.service";
 
 
@@ -24,11 +24,11 @@ import {ErrorService} from "./error.service";
                 <form class="login col s6" (ngSubmit)="onLogin()">
                     <h5 class="title">Login</h5>
                     <div class="input-field col s12">
-                        <input [(ngModel)]="loginUsername" type="text" class="validate" id="username"  placeholder="Username" />
+                        <input name="username" [(ngModel)]="loginUsername" type="text" class="validate" id="username"  placeholder="Username" />
                         <label for="username" class="active">Username</label>
                     </div>
                     <div class="input-field col s12">
-                        <input [(ngModel)]="loginPassword" type="password"  placeholder="Password" />
+                        <input name="password" [(ngModel)]="loginPassword" type="password"  placeholder="Password" />
                         <label class="active">Password</label>
                     </div>
                     <button type="submit" class="btn" >Login</button>
@@ -36,11 +36,11 @@ import {ErrorService} from "./error.service";
                 <form class="register col s6" (ngSubmit)="onRegister()">
                     <h5 class="title">Register</h5>
                     <div class="input-field col s12">
-                        <input type="text" [(ngModel)]="registerUsername" class="validate" id="username"  placeholder="Username" />
+                        <input name="username" type="text" [(ngModel)]="registerUsername" class="validate" id="username"  placeholder="Username" />
                         <label for="username"  class="active">Username</label>
                     </div>
                     <div class="input-field col s12">
-                        <input type="password"  [(ngModel)]="registerPassword" placeholder="Password" />
+                        <input name="password" type="password"  [(ngModel)]="registerPassword" placeholder="Password" />
                         <label class="active">Password</label>
                     </div>
                     <button type="submit" class="btn red lighten-1" >Register</button>                
@@ -97,10 +97,11 @@ export class MembersComponent {
             this.userService.login(this.loginUsername, this.loginPassword)
                 .then((role) => {
                     if (role === 'user') {
-                        console.log('navigate to questions');
-                        this.router.navigate(['Exams'])
+                        console.log('navigate to exams user role');
+                        this.router.navigate(['exams'])
                     } else if (role === 'admin') {
-                        this.router.navigate(['Exams'])
+                        console.log('navigate to exams admin role');
+                        this.router.navigate(['exams'])
                     }
                 })
                 .catch(error => this.errorService.announceError(error));
@@ -117,7 +118,7 @@ export class MembersComponent {
                     this.registerPassword = '';
                     this.loginUsername = this.registerUsername;
                     this.registerUsername = '';
-                    //this.router.navigate(['Exams'])
+                    //this.router.navigate(['exams'])
                 })
                 .catch(error => this.errorService.announceError(error));
         } catch(e) {

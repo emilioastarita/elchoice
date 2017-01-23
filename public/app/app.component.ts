@@ -1,6 +1,8 @@
 import {Component, OnInit} from "@angular/core";
+import { RouterModule }   from '@angular/router';
+import { Router }   from '@angular/router';
 
-import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, RouteDefinition, Router} from "@angular/router-deprecated";
+
 import {ExamsComponent} from "./exams/exams.component";
 import {MembersComponent} from "./members.component";
 import {QuestionEditComponent} from "./questions/question-edit.component";
@@ -17,7 +19,6 @@ import {ExamEditComponent} from "./exams/exam-edit.component";
 import {ExamResolveComponent} from "./exams/exam-resolve.component";
 
 
-
 declare var jQuery:any;
 
 @Component({
@@ -27,89 +28,34 @@ declare var jQuery:any;
     <div class="nav-wrapper black">
       <a href="#" data-activates="mobile-navbar" class="button-collapse"><i class="material-icons">menu</i></a>
       <ul id="nav-mobile" class="left hide-on-med-and-down">
-        <li [class.active]="router.isRouteActive(router.generate(['/Exams']))">
-            <a [routerLink]="['Exams']" *ngIf="userRole === 'user' || userRole === 'admin' ">Exams</a>
+        <li routerLink="/exams" routerLinkActive="active">
+            <a routerLink="/exams" *ngIf="userRole === 'user' || userRole === 'admin' ">Exams</a>
         </li>       
-        <li [class.active]="router.isRouteActive(router.generate(['/Users']))" >
-            <a [routerLink]="['Users']"  *ngIf="userRole === 'admin' || userRole === 'manager'">Users</a>
+        <li routerLink="/users" routerLinkActive="active">
+            <a routerLink="/users"  *ngIf="userRole === 'admin' || userRole === 'manager'">Users</a>
         </li>
-        <li [class.active]="router.isRouteActive(router.generate(['/Members']))">
-            <a [routerLink]="['Members']" *ngIf="userRole === 'guest'">Members</a>
+        <li routerLink="/members" routerLinkActive="active">
+            <a routerLink="/members" *ngIf="userRole === 'guest'">Members</a>
         </li>
         <li>
             <a (click)="logout()"  *ngIf="userRole !==  'guest'">Logout ({{userRole}})</a>
         </li>
       </ul>
       <ul id="mobile-navbar"  class="side-nav">
-        <li><a [routerLink]="['Users']" *ngIf="userRole === 'admin' || userRole === 'manager'">Users</a></li>
-        <li><a [routerLink]="['Exams']" *ngIf="userRole === 'user' || userRole === 'admin' ">Exams</a></li>
-        <li><a [routerLink]="['Members']" *ngIf="userRole === 'guest'">Members</a></li>
+        <li><a routerLink="/users" *ngIf="userRole === 'admin' || userRole === 'manager'">Users</a></li>
+        <li><a routerLink="/exams" *ngIf="userRole === 'user' || userRole === 'admin' ">Exams</a></li>
+        <li><a routerLink="/members" *ngIf="userRole === 'guest'">Members</a></li>
         <li><a (click)="logout()"  *ngIf="userRole !==  'guest'">Logout ({{userRole}})</a></li>
       </ul>      
     </div>
   </nav>
     <div class="routerOutletContainer">
-      <my-message></my-message>
+      <message></message>
       <router-outlet></router-outlet>
     </div>
 `,
-    directives: <any[]>[ROUTER_DIRECTIVES, MessageComponent],
-    providers: [UserService, QuestionService, ExamService, ErrorService, ROUTER_PROVIDERS]
+    providers: [UserService, QuestionService, ExamService, ErrorService]
 })
-@RouteConfig(<RouteDefinition[]>[
-    {
-        path: '/members',
-        name: 'Members',
-        component: MembersComponent,
-        useAsDefault: true
-    },
-    {
-        path: '/exams',
-        name: 'Exams',
-        component: ExamsComponent,
-    },
-    {
-        path: '/exams-edit/:id',
-        name: 'ExamEdit',
-        component: ExamEditComponent
-    },
-    {
-        path: '/exams-edit/new',
-        name: 'ExamEditNew',
-        component: ExamEditComponent
-    },
-    {
-        path: '/exams-resolve/:id',
-        name: 'ExamResolve',
-        component: ExamResolveComponent
-    },
-    {
-        path: '/users',
-        name: 'Users',
-        component: UsersComponent,
-
-    },
-    {
-        path: '/users/:id',
-        name: 'UserDetail',
-        component: UserDetailComponent
-    },
-    {
-        path: '/users/new',
-        name: 'UserDetailNew',
-        component: UserDetailComponent
-    },
-    {
-        path: '/exams-edit/:examId/questions/new',
-        name: 'QuestionEditNew',
-        component: QuestionEditComponent
-    },
-    {
-        path: '/exams-edit/:examId/questions/:id',
-        name: 'QuestionEdit',
-        component: QuestionEditComponent
-    },
-])
 export class AppComponent implements OnInit {
     title = 'El Choice Trainer';
     userRole = 'guest';
@@ -133,7 +79,7 @@ export class AppComponent implements OnInit {
             return;
         }
         this.userService.logout().then(() => {
-            this.router.navigate(['Members'])
+            this.router.navigate(['members'])
         });
     }
 }

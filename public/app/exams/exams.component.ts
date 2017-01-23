@@ -1,19 +1,17 @@
 import {Component, OnInit} from "@angular/core";
-import {Router} from "@angular/router-deprecated";
+import {Router} from "@angular/router";
 import {ExamService} from "./exam.service";
 import {Exam} from "../models/Exam";
-import {ExamEditComponent} from "./exam-edit.component";
+
 import {ErrorService} from "../error.service";
 import {UserService} from "../users/user.service";
-import {FilterExamsPipe} from "./filtered-exams";
+
 
 
 @Component({
     selector: 'my-exams',
     templateUrl: 'app/exams/exams.component.html',
     providers: [ExamService],
-    directives: <any[]>[ExamEditComponent],
-    pipes: [FilterExamsPipe]
 })
 export class ExamsComponent implements OnInit {
     exams:Exam[] = [];
@@ -39,17 +37,17 @@ export class ExamsComponent implements OnInit {
 
 
     addExam() {
-        this.router.navigate(['ExamEditNew']);
+        this.router.navigate(['/exams-edit/new']);
     }
 
     edit(exam:Exam) {
-        let link = ['ExamEdit', {id: exam.id}];
-        console.log('exmas edit', link)
+        let link = ['exams-edit', exam.id];
+        console.log('exams edit', link)
         this.router.navigate(link);
     }
 
     resolve(exam:Exam) {
-        let link = ['ExamResolve', {id: exam.id}];
+        let link = ['exams-resolve', exam.id];
         this.router.navigate(link);
     }
 

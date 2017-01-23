@@ -1,44 +1,53 @@
 import {Component, OnInit} from "@angular/core";
 import {Exam} from "../models/Exam";
 import {ExamService} from "./exam.service";
-import {RouteParams} from "@angular/router-deprecated";
+
 import {ErrorService} from "../error.service";
 import {Question} from "../models/Question";
-import {Router} from "@angular/router-deprecated";
+import {Router, ActivatedRoute, Params} from "@angular/router";
 import {QuestionService} from "../questions/question.service";
 import {FilterQuestionsPipe} from "../questions/filtered-questions";
+import {Observable} from "rxjs";
 
 @Component({
     selector: 'exam-edit',
     templateUrl: './app/exams/exam-edit.component.html',
     providers: [ExamService],
-    pipes: [FilterQuestionsPipe]
 })
 export class ExamEditComponent implements OnInit {
 
     exam:Exam;
 
     constructor(private router:Router,
+                private route:ActivatedRoute,
                 private examService:ExamService,
                 private questionService:QuestionService,
-                private errorService:ErrorService,
-                private routeParams:RouteParams) {
+                private errorService:ErrorService
+                ) {
 
     }
 
     ngOnInit() {
-        if (this.routeParams.get('id') !== null) {
-            const id = +this.routeParams.get('id');
-            this.examService.getExam(id)
-                .then(exam => this.exam = exam);
-        } else {
-            this.exam = new Exam();
-        }
+
+        const switchMap = (params: Params) => {
+            if (params['id'] === 'new') {
+                return Promise.resolve(new Exam());
+            } else {
+                return this.examService.getExam(+params['id']);
+            }
+        };
+
+        this.route.params
+            .switchMap(switchMap)
+            .subscribe((exam:Exam) => {
+                this.exam = exam;
+            });
+
     }
 
 
     cancel() {
-        this.router.navigate(['Exams']);
+        this.router.navigate(['exams']);
     }
 
     save() {
@@ -46,7 +55,7 @@ export class ExamEditComponent implements OnInit {
             .save(this.exam)
             .then((exam) => {
                 this.errorService.announceFlash('Saved!', 0);
-                let link = ['ExamEdit', {id: exam.id}];
+                let link = ['exams-edit', exam.id];
                 this.router.navigate(link);
             })
             .catch(error => this.errorService.announceError(error));
@@ -55,11 +64,11 @@ export class ExamEditComponent implements OnInit {
 
     addQuestion() {
         event.stopPropagation();
-        this.router.navigate(['QuestionEditNew', { examId: this.exam.id}]);
+        this.router.navigate(['exams-edit', this.exam.id, 'questions', 'new']);
     }
 
     editQuestion(question:Question) {
-        let link = ['QuestionEdit', {id: question.id, examId: this.exam.id}];
+        let link = ['exams-edit', this.exam.id, 'questions', question.id];
         this.router.navigate(link);
     }
 
