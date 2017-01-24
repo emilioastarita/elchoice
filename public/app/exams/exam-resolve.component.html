@@ -28,7 +28,7 @@
 
             <div class="card-panel darken-3 answer-container">
                 <h5 class="exam-resolve-question">
-                    <i class="circle material-icons grey-text">question_answer</i>
+                    <!--<i class="circle material-icons grey-text">question_answer</i>-->
                     {{question.text}}
                 </h5>
                 <div class="answer-status green" *ngIf="question.userCheckAnswer && question.allCorrect">
@@ -53,7 +53,7 @@
                                        type="checkbox"
                                        (click)="reset(question)"
                                        [(ngModel)]="answer.userAnswer"
-                                       [attr.id]=answer.getHtmlId()/>
+                                       [attr.id]=answer.getHtmlId() >
                                 <span class="black-text white" *ngIf="answer.userAnswer" (click)="reset(question)">
                                     ◉
                                 </span>
