@@ -1,11 +1,10 @@
-import { NgModule }      from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule }   from '@angular/forms';
-
-import { RouterModule, Routes } from '@angular/router';
-import { AppComponent }  from './app.component';
+import {NgModule} from "@angular/core";
+import {BrowserModule} from "@angular/platform-browser";
+import {FormsModule} from "@angular/forms";
+import {RouterModule, Routes} from "@angular/router";
+import {AppComponent} from "./app.component";
 import {MessageComponent} from "./message.component";
-import { HttpModule } from '@angular/http';
+import {HttpModule} from "@angular/http";
 import {MembersComponent} from "./members.component";
 import {ExamsComponent} from "./exams/exams.component";
 import {ExamEditComponent} from "./exams/exam-edit.component";
@@ -19,6 +18,8 @@ import {FilterQuestionsPipe} from "./questions/filtered-questions";
 
 
 const appRoutes :Routes = [
+    {path: '', redirectTo: 'exams', pathMatch: 'full'},
+
     {
         path: 'members',
         component: MembersComponent,

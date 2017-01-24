@@ -47,23 +47,33 @@
 
                 <div class="answer " *ngFor="let answer of question.answers">
 
-                        <label class=""   [attr.for]=answer.getHtmlId()>
+                    <label class="default-color-text" [attr.for]=answer.getHtmlId()>
                             <span class="">
-                                <input class="hide" type="checkbox" [(ngModel)]="answer.userAnswer"  [attr.id]=answer.getHtmlId() />
-                                <span class="green-text white" *ngIf="answer.userAnswer">
-                                    &#10004;
+                                <input class="hide"
+                                       type="checkbox"
+                                       (click)="reset(question)"
+                                       [(ngModel)]="answer.userAnswer"
+                                       [attr.id]=answer.getHtmlId()/>
+                                <span class="black-text white" *ngIf="answer.userAnswer" (click)="reset(question)">
+                                    ◉
                                 </span>
-                                <span class="grey-text white" *ngIf="!answer.userAnswer">
-                                    &#10008;
+                                <span class="grey-text white" *ngIf="!answer.userAnswer" (click)="reset(question)">
+                                    ⚪
                                 </span>
                             </span>
 
-                            <span [ngClass]="{'black-text': answer.userAnswer }">
+                        <span [ngClass]="{
+                                    'black-text': !question.userCheckAnswer && answer.userAnswer,
+                                    'green-text': question.userCheckAnswer && answer.userAnswer && question.allCorrect,
+                                    'red-text': question.userCheckAnswer && answer.userAnswer && !question.allCorrect
+
+                                    }">
                                 {{answer.text}}
                             </span>
 
                             <span *ngIf="question.userShowAnswer && answer.correct"
-                                  class="green-text correct-answer"><i class="material-icons">done</i></span>
+                                  class="green-text correct-answer"><i class="material-icons">done</i>
+                            </span>
                         </label>
 
                 </div>

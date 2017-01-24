@@ -43,4 +43,5 @@ export class Question {
         console.log('allCorrect: ' , this.allCorrect, ' userCheckAnswer' , this.userCheckAnswer)
     }
 
+
 }

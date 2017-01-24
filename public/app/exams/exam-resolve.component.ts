@@ -3,8 +3,6 @@ import {Exam} from "../models/Exam";
 import {ExamService} from "./exam.service";
 import {ActivatedRoute, Params} from "@angular/router";
 import {ErrorService} from "../error.service";
-import {QuestionEditComponent} from "../questions/question-edit.component";
-import {FilterQuestionsPipe} from "../questions/filtered-questions";
 import {Question} from "../models/Question";
 
 
@@ -17,17 +15,15 @@ import {Question} from "../models/Question";
 })
 export class ExamResolveComponent implements OnInit {
 
-    exam:Exam;
+    exam: Exam;
     correct = 0;
     wrong = 0;
     notResolved = 0;
     total = 0;
     resolved = 0;
 
-    constructor(private examService:ExamService,
-                private errorService:ErrorService,
-                private route:ActivatedRoute) {
-
+    constructor(private examService: ExamService,
+                private route: ActivatedRoute) {
     }
 
     ngOnInit() {
@@ -39,13 +35,18 @@ export class ExamResolveComponent implements OnInit {
             });
     }
 
-    showAnswer(question:Question) {
+    showAnswer(question: Question) {
         question.userShowAnswer = true;
         this.calcStats();
     }
 
-    checkAnswers(question:Question) {
+    checkAnswers(question: Question) {
         question.checkAnswers();
+        this.calcStats();
+    }
+
+    reset(question: Question) {
+        question.userCheckAnswer = false;
         this.calcStats();
     }
 
@@ -54,24 +55,19 @@ export class ExamResolveComponent implements OnInit {
         this.resolved = 0;
         this.wrong = 0;
         this.correct = 0;
-        this.exam.questions.forEach((q)=>{
-           if (q.userCheckAnswer) {
+        this.exam.questions.forEach((q) => {
+            if (q.userCheckAnswer) {
                 this.resolved++;
                 if (q.allCorrect) {
                     this.correct++;
                 } else {
                     this.wrong++;
                 }
-           } else {
-               this.notResolved--;
-           }
+            } else {
+                this.notResolved--;
+            }
         });
     }
-
-    goBack() {
-        window.history.back();
-    }
-
 
 
 }
