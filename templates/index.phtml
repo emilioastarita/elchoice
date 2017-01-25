@@ -30,6 +30,7 @@
                     <div class="card-content white-text">
                         <span class="card-title">El Choice Trainer</span>
                         <p>Loading....</p>
+                        <p>Deploy system <strong><?php echo $deployJs; ?></strong>....</p>
                     </div>
                 </div>
             </div>
@@ -43,6 +44,11 @@
     <?php endif; ?>
 
 <script>
+    <?php if ($deployJs === 'prod'): ?>
+        window.DEPLOY_MODE = 'prod';
+    <?php else: ?>
+        window.DEPLOY_MODE = 'dev';
+    <?php endif; ?>
     System.import('app').catch(function (err) {
         console.error(err);
     });
