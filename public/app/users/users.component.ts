@@ -11,8 +11,6 @@ import {FilterUsersPipe} from "./filtered-users";
     selector: 'my-users',
     templateUrl: './app/users/users.component.html',
     styleUrls:  ['out/users.component.css'],
-    // directives: <any[]>[UserDetailComponent],
-    // pipes: [FilterUsersPipe]
 })
 
 export class UsersComponent implements OnInit {
@@ -44,8 +42,6 @@ export class UsersComponent implements OnInit {
         event.stopPropagation();
         this.router.navigate(['users/new']);
     }
-
-
 
     delete(user: User, event: any) {
         event.stopPropagation();
