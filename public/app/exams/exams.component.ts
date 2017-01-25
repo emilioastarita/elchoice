@@ -15,18 +15,12 @@ import {UserService} from "../users/user.service";
 })
 export class ExamsComponent implements OnInit {
     exams:Exam[] = [];
-    userRole = 'user';
+
     filter = '';
 
     constructor(private router:Router,
                 private errorService:ErrorService,
-                private userService:UserService,
                 private examService:ExamService) {
-        userService.loginAnnounced.subscribe((role) => {
-            this.userRole = role;
-        });
-        this.userRole = userService.userRole;
-
     }
 
     ngOnInit() {

@@ -15,21 +15,23 @@ export class UserService {
     private loginAnnounceSource = new Subject<string>();
     public loginAnnounced = this.loginAnnounceSource.asObservable();
 
-    constructor(private http:Http,
-                private errorService:ErrorService) {
+    constructor(private http: Http,
+                private errorService: ErrorService) {
 
     }
 
-    announceLogin(role:string) {
+    announceLogin(role: string) {
         this.loginAnnounceSource.next(role);
         this.userRole = role;
     }
 
     checkLoginStatus() {
+        console.log('checkLoginStatus')
         this.http.get('/api/members/login-status').toPromise()
             .then((res) => {
                 this.announceLogin(res.json().role);
             }).catch((error) => {
+
             this.announceLogin('guest');
         })
     }
@@ -72,7 +74,7 @@ export class UserService {
             ).toPromise()
             .then((res) => {
                 let role = res.json().role;
-                this.errorService.announceFlash('New user ('+role+') created! Now you can login', 0);
+                this.errorService.announceFlash('New user (' + role + ') created! Now you can login', 0);
             }).catch((error) => {
                 this.announceLogin('guest');
                 return this.errorService.promiseHandler()(error);
@@ -80,27 +82,27 @@ export class UserService {
     }
 
 
-    getUsers():Promise<User[]> {
+    getUsers(): Promise<User[]> {
         return this.http.get(`${this.usersUrl}/`)
             .toPromise()
             .then(response => response.json())
             .catch(this.errorService.promiseHandler())
     }
 
-    getUser(id:number):Promise<User> {
+    getUser(id: number): Promise<User> {
         return this.getUsers()
             .then(users => users.find(u => u.id === id))
             .catch(this.errorService.promiseHandler());
     }
 
-    save(user:User):Promise<User> {
+    save(user: User): Promise<User> {
         if (user.id) {
             return this.put(user);
         }
         return this.post(user);
     }
 
-    private post(user:User):Promise<User> {
+    private post(user: User): Promise<User> {
         let headers = new Headers({
             'Content-Type': 'application/json'
         });
@@ -112,7 +114,7 @@ export class UserService {
             .catch(this.errorService.promiseHandler());
     }
 
-    private put(user:User) {
+    private put(user: User) {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
         let url = `${this.usersUrl}/${user.id}`;
@@ -123,7 +125,7 @@ export class UserService {
             .catch(this.errorService.promiseHandler());
     }
 
-    delete(user:User) {
+    delete(user: User) {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
 

@@ -51,10 +51,11 @@ declare var jQuery:any;
   </nav>
     <div class="routerOutletContainer">
       <message></message>
-      <router-outlet></router-outlet>
+      <ng2-page-transition>
+          <router-outlet></router-outlet>
+      </ng2-page-transition>
     </div>
-`,
-    providers: [UserService, QuestionService, ExamService, ErrorService]
+`
 })
 export class AppComponent implements OnInit {
     title = 'El Choice Trainer';

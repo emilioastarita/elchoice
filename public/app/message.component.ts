@@ -1,6 +1,7 @@
-import {Component} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {ErrorService, IMessage} from "./error.service";
 import {Router} from "@angular/router";
+import {Subscription} from "rxjs";
 
 
 @Component({
@@ -50,18 +51,21 @@ import {Router} from "@angular/router";
       </div>
     `
 })
-export class MessageComponent {
+export class MessageComponent implements OnInit {
 
     open = false;
     message : IMessage;
     currentInterval = null;
     currentSeconds = 0;
-    constructor(private router:Router,
-                private errorService:ErrorService) {
+    subscription :Subscription = null;
+    constructor(private errorService:ErrorService) {
         const SECONDS = 4;
         this.message = <IMessage>{message: '', title: '', type: "message", code: 0};
-        console.log('Loaded MessageComponent');
-        errorService.errorAnnounced.subscribe((message : IMessage) => {
+        console.log('Loaded MessageComponent error subscribing', errorService.errorAnnounced);
+        this.subscription = errorService.errorAnnounced.subscribe((message : IMessage) => {
+            if (message.type === 'ignore') {
+                return;
+            }
             console.log('Message Component receive', message);
             this.message = message;
             clearInterval(this.currentInterval);
@@ -76,16 +80,16 @@ export class MessageComponent {
                 }, 1000);
             }
             this.open = true;
-            if (message.code === 401) {
-                this.router.navigate(['members'])
-            }
         });
     }
-    close(event?) {
+
+    private close(event?) {
         if (event) event.preventDefault();
         this.open = false;
     }
 
-
+    ngOnInit() {
+        console.log('Message Component ngOnInit', this.subscription)
+    }
 }
 

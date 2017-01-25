@@ -15,6 +15,11 @@ import {QuestionEditComponent} from "./questions/question-edit.component";
 import {FilterUsersPipe} from "./users/filtered-users";
 import {FilterExamsPipe} from "./exams/filtered-exams";
 import {FilterQuestionsPipe} from "./questions/filtered-questions";
+import { Ng2PageTransition } from "ng2-page-transition";
+import {ErrorService} from "./error.service";
+import {UserService} from "./users/user.service";
+import {QuestionService} from "./questions/question.service";
+import {ExamService} from "./exams/exam.service";
 
 
 const appRoutes :Routes = [
@@ -72,7 +77,14 @@ const appRoutes :Routes = [
         FormsModule,
         RouterModule.forRoot(appRoutes)
     ],
+    providers: [
+        ErrorService,
+        UserService,
+        QuestionService,
+        ExamService
+    ],
     declarations: [
+
         AppComponent,
         MessageComponent,
         MembersComponent,
@@ -85,6 +97,7 @@ const appRoutes :Routes = [
         FilterUsersPipe,
         FilterExamsPipe,
         FilterQuestionsPipe,
+        Ng2PageTransition,
     ],
     bootstrap:    [ AppComponent ]
 })

@@ -1,24 +1,39 @@
 import {Injectable} from "@angular/core";
 import "rxjs/add/operator/toPromise";
-import {Subject} from "rxjs/Rx";
+import {Subject, BehaviorSubject} from "rxjs/Rx";
+import {Router} from "@angular/router";
 
 export interface IMessage {
     message:string;
     title:string;
     code: number;
-    type:'error'|'message'|'flash';
+    type:'error'|'message'|'flash'|'ignore';
 }
 
 
 @Injectable()
 export class ErrorService {
 
-    private announceSource = new Subject<IMessage>();
+    static initMessage : IMessage = {
+        message: '',
+        title: '',
+        code: 0,
+        type: 'ignore'
+    };
+    private announceSource = new BehaviorSubject<IMessage>(ErrorService.initMessage);
     public errorAnnounced = this.announceSource.asObservable();
 
+    constructor(private router:Router) {
+
+    }
+
+
     announceError(message:string, code = 500) {
-        console.log('Announced error', message);
+        console.log('Announced error', message, code);
         this.announceSource.next({title: 'Oops', message: message, type: 'error', code: code});
+        if (code === 401) {
+            this.router.navigate(['members'])
+        }
     }
 
     announceFlash(message:string, code: number, title = 'Message') {
@@ -27,9 +42,8 @@ export class ErrorService {
     }
 
     promiseHandler() {
-        var self = this;
         return (error:any) => {
-            console.error('An error occurred', error);
+            console.warn('An error occurred', error);
             if (typeof(error._body) !== 'undefined') {
                 try {
                     console.log(error._body);
@@ -41,9 +55,10 @@ export class ErrorService {
                     }
 
                 } catch (e) {
+
                 }
             }
-            self.announceError(error.message || error, error.code || 500);
+            this.announceError(error.message || error, error.code || 500);
             return Promise.reject(error.message || error);
         }
     }
