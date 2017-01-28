@@ -2,9 +2,9 @@
 namespace App\Services;
 
 use App\Entities\Exam;
-use Doctrine\ORM\EntityManager;
 use Exception;
 use InvalidArgumentException;
+use Slim\Container;
 
 class ExamService
 {
@@ -14,10 +14,17 @@ class ExamService
      */
     protected $em;
 
-    public function __construct(EntityManager $em)
+    /*
+     * @var ExamRepository
+     */
+    protected $examRepo;
+
+    public function __construct(Container $c)
     {
-        $this->em = $em;
+        $this->em = $c->get('em');
+        $this->examRepo = $c->get('examRepository');
     }
+
 
     /**
      * @param $data
@@ -89,8 +96,7 @@ class ExamService
 
     public function find($id, $userId = null)
     {
-        $examRepo = $this->em->getRepository('App\Entities\Exam');
-        $exam = $examRepo->find($id);
+        $exam = $this->examRepo->find($id);
         if ($exam && $userId && $exam->getUser()->getId() !== $userId) {
             return null;
         }
@@ -99,12 +105,11 @@ class ExamService
 
     public function findAll($userId = null)
     {
-        $examRepository = $this->em->getRepository('App\Entities\Exam');
         if ($userId) {
             $user = $this->em->getReference('App\Entities\User', $userId);
-            $all = $examRepository->findBy(['user' => $user], ['created' => 'asc']);
+            $all = $this->examRepo->findBy(['user' => $user], ['created' => 'asc']);
         } else {
-            $all = $examRepository->findBy([], ['created' => 'asc']);
+            $all = $this->examRepo->findBy([], ['created' => 'asc']);
         }
 
         return array_map(function ($exam) {

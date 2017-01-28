@@ -57,7 +57,8 @@ class QuestionController extends BaseController
     public function view(Request $req, Response $res, $args)
     {
         $questionService = $this->get('questionService');
-        $this->logger->info("Get question");
+        $this->logger->info("Get question" . $args['id']);
+
         $question = $questionService->find($args['id'], $this->getFilterId());
         if (empty($question)) {
             throw new \Exception('No question.');
@@ -76,7 +77,7 @@ class QuestionController extends BaseController
         }
         $params['id'] = $args['id'];
 
-        $question = $questionService->update($params);
+        $question = $questionService->update($params, $params['userId']);
         if (empty($question)) {
             throw new NotFoundException('No question.');
         }

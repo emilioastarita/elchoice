@@ -4,9 +4,9 @@ namespace App\Services;
 use App\Entities\Answer;
 use App\Entities\Question;
 use App\Entities\Trip;
-use Doctrine\ORM\EntityManager;
 use Exception;
 use InvalidArgumentException;
+use Slim\Container;
 
 class QuestionService
 {
@@ -16,9 +16,22 @@ class QuestionService
      */
     protected $em;
 
-    public function __construct(EntityManager $em)
+    /*
+     * @var AnswerRepository
+     */
+    protected $answerRepo;
+
+    /*
+     * @var QuestionRepository
+     */
+    protected $questionRepo;
+
+
+    public function __construct(Container $c)
     {
-        $this->em = $em;
+        $this->em = $c->get('em');
+        $this->answerRepo = $c->get('answerRepository');
+        $this->questionRepo = $c->get('questionRepository');
     }
 
     /**
@@ -104,8 +117,7 @@ class QuestionService
 
     public function deleteAnswersForQuestion(Question $question)
     {
-        $answerRepo = $this->em->getRepository('App\Entities\Answer');
-        $answers = $answerRepo->findBy(['question'=> $question]);
+        $answers = $this->answerRepo->findBy(['question' => $question]);
         array_map([$this->em, 'remove'], $answers);
     }
 
@@ -128,8 +140,7 @@ class QuestionService
      */
     public function find($id)
     {
-        $questionRepository = $this->em->getRepository('App\Entities\Question');
-        $question = $questionRepository->find($id);
+        $question = $this->questionRepo->find($id);
         return $question;
     }
 

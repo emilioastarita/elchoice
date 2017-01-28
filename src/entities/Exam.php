@@ -6,6 +6,7 @@ namespace App\Entities;
  * @Entity
  * @HasLifecycleCallbacks
  * @Table(name="exam")
+ * @Entity(repositoryClass="App\Repository\ExamRepository")
  **/
 class Exam
 {

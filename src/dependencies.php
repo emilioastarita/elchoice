@@ -1,6 +1,6 @@
 <?php
 // DIC configuration
-use \App\Middlewares\Guard;
+use App\Middlewares\Guard;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Setup;
 use Interop\Container\ContainerInterface;
@@ -46,16 +46,31 @@ $container['errorHandler'] = function ($c) {
     };
 };
 
+$repositories = [
+    'answer',
+    'exam',
+    'question',
+    'user',
+];
+
+foreach ($repositories as $repo) {
+    $entity = 'App\Entities\\' . ucfirst($repo);
+    $repository = $repo . 'Repository';
+    $container[$repository] = function (ContainerInterface $c) use ($entity) {
+        return $c->get('em')->getRepository($entity);
+    };
+}
+
 $container['userService'] = function (ContainerInterface $c) {
-    return new \App\Services\UserService($c->get('em'));
+    return new \App\Services\UserService($c);
 };
 
 $container['questionService'] = function (ContainerInterface $c) {
-    return new \App\Services\QuestionService($c->get('em'));
+    return new \App\Services\QuestionService($c);
 };
 
 $container['examService'] = function (ContainerInterface $c) {
-    return new \App\Services\ExamService($c->get('em'));
+    return new \App\Services\ExamService($c);
 };
 
 $container['userSession'] = function (ContainerInterface $c) {

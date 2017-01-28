@@ -6,6 +6,7 @@ namespace App\Entities;
  * @Entity
  * @HasLifecycleCallbacks
  * @Table(name="answer")
+ * @Entity(repositoryClass="App\Repository\AnswerRepository")
  **/
 class Answer
 {

@@ -76,7 +76,7 @@ class ExamController extends BaseController
         }
         $params['id'] = $args['id'];
 
-        $exam = $examService->update($params);
+        $exam = $examService->update($params, $params['userId']);
         if (empty($exam)) {
             throw new NotFoundException('No exam.');
         }

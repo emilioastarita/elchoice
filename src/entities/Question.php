@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @Entity
  * @HasLifecycleCallbacks
  * @Table(name="question")
+ * @Entity(repositoryClass="App\Repository\QuestionRepository")
  **/
 class Question
 {

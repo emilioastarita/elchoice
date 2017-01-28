@@ -2,8 +2,8 @@
 namespace App\Services;
 
 use App\Entities\User;
-use Doctrine\ORM\EntityManager;
 use InvalidArgumentException;
+use Slim\Container;
 use Slim\Exception\NotFoundException;
 
 class UserService
@@ -16,9 +16,15 @@ class UserService
      */
     protected $em;
 
-    public function __construct(EntityManager $em)
+    /*
+     * @var UserRepository
+     */
+    protected $userRepo;
+
+    public function __construct(Container $c)
     {
-        $this->em = $em;
+        $this->em = $c->get('em');
+        $this->userRepo = $c->get('userRepository');
     }
 
     /**
@@ -33,8 +39,7 @@ class UserService
         }
         $this->validData($data);
 
-        $userRepository = $this->em->getRepository('App\Entities\User');
-        $user = $userRepository->findOneBy(['username' => $data['username']]);
+        $user = $this->userRepo->findOneBy(['username' => $data['username']]);
         if ($user) {
             throw new \Exception('Sorry your username is already in use.');
         }
@@ -52,7 +57,6 @@ class UserService
 
     public function update($data)
     {
-        $userRepository = $this->em->getRepository('App\Entities\User');
         if (empty($data['id'])) {
             throw new InvalidArgumentException('Missing id param.');
         }
@@ -67,7 +71,7 @@ class UserService
 
         if (isset($data['username'])) {
             $this->validateUsername($data['username']);
-            $alreadyTaken = $userRepository->findOneBy(['username' => $data['username']]);
+            $alreadyTaken = $this->userRepo->findOneBy(['username' => $data['username']]);
             if ($alreadyTaken && $alreadyTaken->getId() !== $user->getId()) {
                 throw new \Exception('Sorry your username is already in use.');
             }
@@ -107,15 +111,13 @@ class UserService
 
     public function find($id)
     {
-        $userRepository = $this->em->getRepository('App\Entities\User');
-        $user = $userRepository->find($id);
+        $user = $this->userRepo->find($id);
         return $user;
     }
 
     public function findWithCredentials($username, $password)
     {
-        $userRepository = $this->em->getRepository('App\Entities\User');
-        $user = $userRepository->findOneBy(['username'=> $username]);
+        $user = $this->userRepo->findOneBy(['username' => $username]);
         if (!$user) {
             return null;
         }
@@ -127,8 +129,7 @@ class UserService
 
     public function findAll($array = true)
     {
-        $userRepository = $this->em->getRepository('App\Entities\User');
-        $all =  $userRepository->findAll();
+        $all = $this->userRepo->findAll();
         if ($array) {
             return array_map(function($user){
                 return $user->toArray();
