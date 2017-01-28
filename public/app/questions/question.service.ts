@@ -21,7 +21,6 @@ export class QuestionService {
     }
 
     getErrorPromise(question:Question) {
-        console.log('Question is', question);
         if (!question.text.trim().length) {
             return Promise.reject('You need complete the question text.');
         }
@@ -42,7 +41,7 @@ export class QuestionService {
 
     save(question:Question) {
         const promise = this.getErrorPromise(question);
-        if (typeof(promise) !== 'null') {
+        if (promise instanceof Promise) {
             return promise;
         }
         if (question.id) {
