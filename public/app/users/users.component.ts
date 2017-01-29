@@ -1,26 +1,24 @@
-import {Component, OnInit} from "@angular/core";
-import {UserDetailComponent} from "./user-detail.component";
-import {User} from "../models/User";
-import {UserService} from "./user.service";
-import {Router} from "@angular/router";
-import {ErrorService} from "../error.service";
-import {FilterUsersPipe} from "./filtered-users";
+import { Component, OnInit } from "@angular/core";
+import { UserDetailComponent } from "./user-detail.component";
+import { User } from "../models/User";
+import { UserService } from "./user.service";
+import { Router } from "@angular/router";
+import { ErrorService } from "../error.service";
+import { FilterUsersPipe } from "./filtered-users";
 
 
 @Component({
     selector: 'my-users',
-    templateUrl: './app/users/users.component.html',
-    styleUrls:  ['out/users.component.css'],
+    templateUrl: './app/users/users.component.html'
 })
-
 export class UsersComponent implements OnInit {
-    public users:User[];
+    public users: User[];
     error: any;
     filter = '';
 
     constructor(private router: Router,
-                private errorService:ErrorService,
-                private userService:UserService) {
+        private errorService: ErrorService,
+        private userService: UserService) {
     }
 
     getUsers() {

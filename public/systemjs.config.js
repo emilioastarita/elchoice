@@ -1,15 +1,20 @@
 (function(global) {
     // map tells the System loader where to look for things
     var map = {
-        'app':                        'out', // 'dist',
-        '@angular':                   'node_modules/@angular',
-        'ng2-page-transition':        'node_modules/ng2-page-transition/src/ng2-page-transition.component.js',
-        'rxjs':                       'node_modules/rxjs'
+        'app':                         'out', // 'dist',
+        '@angular':                    'node_modules/@angular',
+        'ng2-page-transition':         'node_modules/ng2-page-transition/src/ng2-page-transition.component.js',
+        'rxjs':                        'node_modules/rxjs'
     };
     // packages tells the System loader how to load when no filename and/or no extension
     var packages = {
-        'app':                        { main: 'main.js',  defaultExtension: 'js' },
-        'rxjs':                       { defaultExtension: 'js' },
+        'app': {
+            main: 'main.js',
+            defaultExtension: 'js',
+        },
+        'rxjs': {
+            defaultExtension: 'js'
+        },
     };
     var ngPackageNames = [
         'common',
@@ -37,7 +42,11 @@
     ngPackageNames.forEach(setPackageConfig);
     var config = {
         map: map,
-        packages: packages
+        packages: packages,
+
+        meta: {
+
+        }
     };
     System.config(config);
 })(this);

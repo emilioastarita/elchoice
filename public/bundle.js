@@ -12,14 +12,30 @@ var files = [
     "systemjs.config.js",
     "out/tmp.js"
 ];
+var fs = require('fs');
+
+
 builder
     .bundle('out', 'out/tmp.js', { minify: false, sourceMaps: true})
     .then(function() {
-        console.log('// Build outfile complete');
-        var line = 'node_modules/uglify-js/bin/uglifyjs  '+files.join(' ')+' -c -m -o out/outfile.js' + "\n";
-        console.log(line);
+        
+
+
+	var result = uglifyJS.minify(files, {
+	    compress: {
+		dead_code: true,
+		global_defs: {
+		    DEBUG: false
+		}
+	    }});
+	process.stdout.write(result.code);
+	
+
     })
     .catch(function(err) {
         console.log('Build error');
         console.log(err);
+	process.exit(1);
     });
+
+
